@@ -86,34 +86,24 @@
               var chances = rand;
               callback && callback([rand, chances]);
             },
-            gotBack: function(data) {
-              if(data == null){
-                Swal.fire(
-                  'Chương trình kết thúc',
-                  'Đã hết phần thưởng',
-                  'error'
-                )
-              } else if (data == 'Chúc bạn may mắn lần sau'){
-                Swal.fire(
-                  'Bạn không trúng thưởng',
-                  data,
-                  'error'
-                  
-                )
-                playSound("matluot");
-              } else{
-                Swal.fire(
-                  'Chúc mừng bạn đã trúng',
-                  data,
-                  'success'
-                )
-                playSound("votay");
-              }
-            }
-            startSpin: function () {
+            gotBack: function (data) {
+      if (data == null) {
+        Swal.fire("Chương trình kết thúc", "Đã hết phần thưởng", "error");
+      } else if (data == "Chúc bạn may mắn lần sau") {
+        Swal.fire("Bạn không trúng thưởng", data, "error");
+        playSound("matluot");
+      } else {
+        Swal.fire("Chúc mừng bạn đã trúng", data, "success").then(function () {
+          //playSound("votay");
+        });
+      }
+    },
+    startSpin: function () {
       playSound("dangquay");
     },
-          });
+  });
+});
+
         },
         false
       );
@@ -173,6 +163,10 @@
           }
         }
       }
+      function playSound(soundId) {
+  var audio = document.getElementById(soundId);
+  audio.play();
+}
     </script>
   </body>
 </html>
