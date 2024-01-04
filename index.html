@@ -21,16 +21,12 @@
       <section id="luckywheel" class="hc-luckywheel">
         <div class="hc-luckywheel-container">
           <canvas class="hc-luckywheel-canvas" width="500px" height="500px"
-            >Vòng Quay May Mắn</canvas
+            >Vòng Xoay May Mắn</canvas
           >
         </div>
-        <a class="hc-luckywheel-btn" href="javascript:;"onclick="playSound('votay')">Quay</a>
+        <a class="hc-luckywheel-btn" href="javascript:;">Xoay</a>
       </section>
     </div>
-    <audio id="votay" src="sound/dangquay.mp3"></audio>
-    <audio id="matluot" src="sound/matluot.mp3"></audio>
-    <audio id="dangquay" src="sound/votay.mp3"></audio>
-
 </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="js/hc-canvas-luckwheel.js"></script>
@@ -59,7 +55,7 @@
                 text: "Kẹo Mút",
                 img: "images/keo mut.png",
                 number: 1,
-                percentpage: 0.30 // 30%
+                percentpage: 0.24 // 24%
               },
               {
                 text: "Chúc bạn may mắn lần sau",
@@ -67,10 +63,6 @@
                 percentpage: 0.6 // 60%
               },
             ];
-      function playSound(soundId) {
-        var audio = document.getElementById(soundId);
-        audio.play();
-      }
       document.addEventListener(
         "DOMContentLoaded",
         function() {
@@ -98,21 +90,15 @@
                   'Bạn không trúng thưởng',
                   data,
                   'error'
-                  
                 )
-                playSound("matluot");
               } else{
                 Swal.fire(
-                  'Chúc mừng bạn đã trúng',
+                  'Đã trúng giải',
                   data,
                   'success'
                 )
-                playSound("votay");
               }
             }
-            startSpin: function () {
-      playSound("dangquay");
-    },
           });
         },
         false
