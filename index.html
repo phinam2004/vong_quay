@@ -1,90 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vòng Quay May Mắn</title>
-  <style>
-    .luckywheel {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .luckywheel canvas {
-      width: 500px;
-      height: 500px;
-    }
-    .luckywheel button {
-      display: block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 20px;
-    }
-  </style>
-</head>
-<body>
-  <div class="luckywheel">
-    <canvas id="luckywheel-canvas"></canvas>
-    <button id="spin-button">Quay</button>
-  </div>
-
-  <script>
-    var prizes = [
-      {
-        text: "Đồng Hồ",
-        img: "images/dongho.png",
-      },
-      {
-        text: "Nước Ngọt",
-        img: "images/nuoc_ngot.png",
-      },
-      {
-        text: "Ô Tô",
-        img: "images/oto.png",
-      },
-      {
-        text: "Kẹo Mút",
-        img: "images/keo_mut.png",
-      },
-      {
-        text: "Chúc bạn may mắn lần sau",
-        img: "images/miss.png",
-      },
-    ];
-
-    var canvas = document.getElementById("luckywheel-canvas");
-    var spinButton = document.getElementById("spin-button");
-
-    var wheel = new Winwheel({
-      canvasId: "luckywheel-canvas",
-      numSegments: prizes.length,
-      segments: prizes.map(function (prize) {
-        return { text: prize.text, fillStyle: "gray" };
-      }),
-      animation: {
-        type: "spinToStop",
-        duration: 5,
-        spins: 8,
-        callbackFinished: showResult,
-      },
-      pointerAngle: 0,
-    });
-
-    function showResult() {
-      var winningSegment = wheel.getIndicatedSegment();
-      var resultText = winningSegment.text;
-
-      if (resultText === "Chúc bạn may mắn lần sau") {
-        alert("Bạn không trúng thưởng");
-      } else {
-        alert("Chúc mừng bạn đã trúng thưởng: " + resultText);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vòng Quay May Mắn</title>
+    <link rel="stylesheet" href="css/typo/typo.css" />
+    <link rel="stylesheet" href="css/hc-canvas-luckwheel.css" />
+    <style>
+      .hc-luckywheel{
+        position:fixed;
+        top: 50%;
+        left: 50%;
+        margin-top: -250px;
+        margin-left: -250px;
       }
-    }
-
-    spinButton.addEventListener("click", function () {
-      wheel.startAnimation();
-    });
+    </style>
+  </head>
+  <body class="bg">
+    <div class="wrapper typo" id="wrapper">
+      <section id="luckywheel" class="hc-luckywheel">
+        <div class="hc-luckywheel-container">
+          <canvas class="hc-luckywheel-canvas" width="500px" height="500px"
+            >Vòng Xoay May Mắn</canvas
+          >
+        </div>
+        <a class="hc-luckywheel-btn" href="javascript:;">Xoay</a>
+      </section>
+    </div>
+</style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="js/hc-canvas-luckwheel.js"></script>
+    <script>
+      var isPercentage = true;
+      var prizes = [
+              {
+                text: "Đồng Hồ",
+                img: "images/dongho.png",
+                number: 1, // 1%,
+                percentpage: 0.01 // 1%
+              },
+              {
+                text: "Nước Ngọt",
+                img: "images/nuoc ngot.png",
+                number: 1,
+                percentpage: 0.05 // 5%
+              },
+              {
+                text: "Ô Tô",
+                img: "images/oto.png",
+                number : 1,
+                percentpage: 0.1 // 10%
+              },
+              {
+                text: "Kẹo Mút",
+                img: "images/keo mut.png",
+                number: 1,
+                percentpage: 0.24 // 24%
+              },
+              {
+                text: "Chúc bạn may mắn lần sau",
+                img: "images/miss.png",
+                percentpage: 0.6 // 60%
+              },
+            ];
+      document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+          hcLuckywheel.init({
+            id: "luckywheel",
+            config: function(callback) {
+              callback &&
+                callback(prizes);
+            },
+            mode : "both",
+            getPrize: function(callback) {
+              var rand = randomIndex(prizes);
+              var chances = rand;
+              callback && callback([rand, chances]);
+            },
+            gotBack: function(data) {
+              if(data == null){
+                Swal.fire(
+                  'Chương trình kết thúc',
+                  'Đã hết phần thưởng',
+                  'error'
+                )
+              } else if (data == 'Chúc bạn may mắn lần sau'){
+                Swal.fire(
+                  'Bạn không trúng thưởng',
+                  data,
+                  'error'
+                )
+              } else{
+                Swal.fire(
+                  'Đã trúng giải',
+                  data,
+                  'success'
+                )
+              }
+            }
+          });
         },
         false
       );
@@ -144,10 +159,6 @@
           }
         }
       }
-      function playSound(soundId) {
-  var audio = document.getElementById(soundId);
-  audio.play();
-}
     </script>
   </body>
 </html>
